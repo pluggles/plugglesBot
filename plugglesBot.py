@@ -39,16 +39,16 @@ def start(bot, update):
 
 def help(bot, update, args):
 
-	if len(args)> 0 and args[0] == "alert":
-		bot.sendMessage(update.message.chat_id,helpmessages.alertHelp())
-		return
-	elif len(args)> 0 and args[0] == "fortune":
-		bot.sendMessage(update.message.chat_id,fortune.fortuneHelp())
-		return
-	elif len(args)> 0 and args[0] == "quote":
-		bot.sendMessage(update.message.chat_id,helpmessages.quoteHelp())
-		return
-	update.message.reply_text(helpmessages.mainHelp())
+    if len(args)> 0 and args[0] == "alert":
+        bot.sendMessage(update.message.chat_id,helpmessages.alertHelp())
+        return
+    elif len(args)> 0 and args[0] == "fortune":
+        bot.sendMessage(update.message.chat_id,fortune.fortuneHelp())
+        return
+    elif len(args)> 0 and args[0] == "quote":
+        bot.sendMessage(update.message.chat_id,helpmessages.quoteHelp())
+        return
+    update.message.reply_text(helpmessages.mainHelp())
 
 def madcow(bot, update):
     frt = fortune.fortune("off")
@@ -57,18 +57,18 @@ def madcow(bot, update):
     message = message.replace(">", "&gt;")
     bot.sendMessage(update.message.chat_id, text="<code>"+message+"</code>", parse_mode=telegram.ParseMode.HTML)
 def getcowsay(bot, update, args):
-	args = ' '.join(args)
-	if len(args) == 0:
-		frt = fortune.fortune(args)
-	else:
-		frt = args
-	message = fortune.cowsay([frt])
-	message = message.replace("<", "&lt;")
-	message = message.replace(">", "&gt;")
-	bot.sendMessage(update.message.chat_id, text="<code>"+message+"</code>", parse_mode=telegram.ParseMode.HTML)
+    args = ' '.join(args)
+    if len(args) == 0:
+        frt = fortune.fortune(args)
+    else:
+        frt = args
+    message = fortune.cowsay([frt])
+    message = message.replace("<", "&lt;")
+    message = message.replace(">", "&gt;")
+    bot.sendMessage(update.message.chat_id, text="<code>"+message+"</code>", parse_mode=telegram.ParseMode.HTML)
 def getfortune(bot, update, args):
-	args = ' '.join(args)
-	bot.sendMessage(update.message.chat_id,fortune.fortune(args))
+    args = ' '.join(args)
+    bot.sendMessage(update.message.chat_id,fortune.fortune(args))
 def echo(bot, update):
     update.message.reply_text(update.message.text)
 
@@ -79,7 +79,7 @@ def alarm(bot, job):
     
     message = messages[job.context]
     if len(message) <=0:
-    	message = "Alert set for right now"
+        message = "Alert set for right now"
     bot.sendMessage(job.context, text = message)
 
 
@@ -90,25 +90,25 @@ def alert(bot, update, args, job_queue):
     message_id = update.message.message_id
     user = str(update.message.from_user)
     if (len(args) == 0):
-    	update.message.reply_text('please enter a time')
-    	return
+        update.message.reply_text('please enter a time')
+        return
     if '|' in args:
-		message = ' '.join(args)
-		argstemp = message.split('|')
-		due = alerts.lastDitchAttempt(argstemp[0])
-		if due > 0:
-			argstemp.pop(0)
-			message = ' '.join(argstemp)
-			continueOn = -1
+        message = ' '.join(args)
+        argstemp = message.split('|')
+        due = alerts.lastDitchAttempt(argstemp[0])
+        if due > 0:
+            argstemp.pop(0)
+            message = ' '.join(argstemp)
+            continueOn = -1
     if continueOn == 1:
-		due = alerts.parseADate(args[0])
-		if (due <= 0):
-			due = alerts.regexmatch(args[0])
-		args.pop(0)
-		message = ' '.join(args)
-		if due <= 0:
-		    update.message.reply_text('Sorry that is not a valid time')
-		    return 
+        due = alerts.parseADate(args[0])
+        if (due <= 0):
+            due = alerts.regexmatch(args[0])
+        args.pop(0)
+        message = ' '.join(args)
+        if due <= 0:
+            update.message.reply_text('Sorry that is not a valid time')
+            return 
 
     # Add job to queue
     myContext = '' + str(chat_id) +':' +str(message_id)
@@ -127,27 +127,27 @@ def getDilbert(bot, update, args):
     dilbertStrip = dilbert.getStrip()
     bot.sendMessage(update.message.chat_id, dilbertStrip)
 def setQuote(bot, update, args):
-	chatFile = str(update.message.chat_id)
-	user = str(update.message.from_user)
-	message = ' '.join(args)
-	response = fileIO.WriteAQuote(chatFile, message, user)
-	bot.sendMessage(update.message.chat_id, response)
+    chatFile = str(update.message.chat_id)
+    user = str(update.message.from_user)
+    message = ' '.join(args)
+    response = fileIO.WriteAQuote(chatFile, message, user)
+    bot.sendMessage(update.message.chat_id, response)
 
 def removeQuote(bot, update, args):
-	chatFile = str(update.message.chat_id)
-	user = str(update.message.from_user)
-	quoteId = args[0]
-	response = fileIO.removeQuote(chatFile, quoteId, user)
-	update.message.reply_text(response)
+    chatFile = str(update.message.chat_id)
+    user = str(update.message.from_user)
+    quoteId = args[0]
+    response = fileIO.removeQuote(chatFile, quoteId, user)
+    update.message.reply_text(response)
 
 def getQuote(bot, update, args):
-	chatFile = str(update.message.chat_id)
-	if len(args) == 0:
-		response = fileIO.getRandQuote(chatFile)
-	else:
-		quoteId = args[0]
-		response = fileIO.getQuote(chatFile, quoteId)
-	update.message.reply_text(response)
+    chatFile = str(update.message.chat_id)
+    if len(args) == 0:
+        response = fileIO.getRandQuote(chatFile)
+    else:
+        quoteId = args[0]
+        response = fileIO.getQuote(chatFile, quoteId)
+    update.message.reply_text(response)
 def remove(bot, update, args):
     """Removes the job if the user changed their mind"""
     try:
@@ -158,8 +158,8 @@ def remove(bot, update, args):
             update.message.reply_text('You have no active timer with code:' + myContext_id)
             return
         if user != users[myContext]:
-        	update.message.reply_text("You did not enter that alert!")
-        	return
+            update.message.reply_text("You did not enter that alert!")
+            return
         job = timers[myContext]
         job.schedule_removal()
         del timers[myContext]
@@ -171,26 +171,26 @@ def remove(bot, update, args):
         update.message.reply_text('Usage: /alert <seconds>')
 
 def error(bot, update, error):
-    print logger.warn('Update %s caused error %s' % (update, error))
+    print (logger.warn('Update %s caused error %s' % (update, error)))
 
 
 def findExistingAlerts(job_queue):
-	try:
-		myJobs = fileIO.readJobs("alerts")
-		t = datetime.now()
-		if myJobs != 0:
-			for job in myJobs:
-				due = int(job.due) - int((t-datetime(1970,1,1)).total_seconds())
-				if due > 0:
-					myContext = '' + str(job.chatId) +':' +str(job.messageId)
-					myJob = Job(alarm, due, repeat=False, context=myContext)
-					users[myContext] = job.user
-					messages[myContext] = job.message
-					timers[myContext] = myJob
-					job_queue.put(myJob)
-					fileIO.writeAlertJob("alerts", job.chatId, job.messageId, job.user, job.due, job.message)
-	except:
-		print "Unexpected error:", sys.exc_info()
+    try:
+        myJobs = fileIO.readJobs("alerts")
+        t = datetime.now()
+        if myJobs != 0:
+            for job in myJobs:
+                due = int(job.due) - int((t-datetime(1970,1,1)).total_seconds())
+                if due > 0:
+                    myContext = '' + str(job.chatId) +':' +str(job.messageId)
+                    myJob = Job(alarm, due, repeat=False, context=myContext)
+                    users[myContext] = job.user
+                    messages[myContext] = job.message
+                    timers[myContext] = myJob
+                    job_queue.put(myJob)
+                    fileIO.writeAlertJob("alerts", job.chatId, job.messageId, job.user, job.due, job.message)
+    except:
+        print ("Unexpected error:", sys.exc_info())
 
 def choice(bot, update, args):
     args = " ".join(args)
