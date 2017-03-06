@@ -126,6 +126,13 @@ def alert(bot, update, args, job_queue):
 def getDilbert(bot, update, args):
     dilbertStrip = dilbert.getStrip()
     bot.sendMessage(update.message.chat_id, dilbertStrip)
+def getXkcd(bot, update, args):
+    if len(args) == 0:
+        xkcd = xkcd.getStrip()
+    else:
+        xkcdNumber = args[0]
+        xkcd = xkcd.getStrip(xkcdNumber)
+    bot.sendMessage(update.message.chat_id, dilbertStrip)
 def setQuote(bot, update, args):
     chatFile = str(update.message.chat_id)
     user = str(update.message.from_user)
@@ -236,6 +243,7 @@ def main():
     dp.add_handler(CommandHandler("removequote", removeQuote, pass_args=True))
     dp.add_handler(CommandHandler("quote", getQuote, pass_args=True))
     dp.add_handler(CommandHandler("dilbert", getDilbert, pass_args=True))
+    dp.add_handler(CommandHandler("xkcd", getXkcd, pass_args=True))
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler([Filters.text], parseMessage))
 
