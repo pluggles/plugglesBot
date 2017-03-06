@@ -128,11 +128,11 @@ def getDilbert(bot, update, args):
     bot.sendMessage(update.message.chat_id, dilbertStrip)
 def getXkcd(bot, update, args):
     if len(args) == 0:
-        xkcd = xkcd.getStrip()
+        xkcdUrl = xkcd.getStrip()
     else:
         xkcdNumber = args[0]
-        xkcd = xkcd.getStrip(xkcdNumber)
-    bot.sendMessage(update.message.chat_id, dilbertStrip)
+        xkcdUrl = xkcd.getStrip(xkcdNumber)
+    bot.sendMessage(update.message.chat_id, xkcdUrl)
 def setQuote(bot, update, args):
     chatFile = str(update.message.chat_id)
     user = str(update.message.from_user)
