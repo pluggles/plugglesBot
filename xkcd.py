@@ -2,26 +2,27 @@
 import pytz
 from datetime import datetime
 from datetime import timedelta
-from random import randrange
+from random import randint
+import json
+import urllib2
 def getStrip(myArg= -1):
     if myArg == -1:
-        xkcd = 'c.xkcd.com/random/comic/'
+        myArg = str(randomNum())
+        xkcd = 'https://xkcd.com/' + myArg
     else:
         myArg = str(myArg)
         xkcd = 'https://xkcd.com/' + myArg
     return xkcd
 
-def random_date():
+def randomNum():
     """
-    This function will return a random datetime between two datetime 
+    This function will return a random comic number 
     objects.
     """
-    start = datetime.strptime('1989-04-16', '%Y-%m-%d')
-    end = datetime.now()
-    delta = end - start
-    int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
-    random_second = randrange(int_delta)
-    return start + timedelta(seconds=random_second)
+    obj = json.load(urllib2.urlopen("https://xkcd.com/info.0.json"))
+    latest = obj["num"]
+    print latest
+    return randint(1, latest)
 
 def main():
 
@@ -29,6 +30,7 @@ def main():
    print p
    p=getStrip(44)
    print p
+   #print random_date()
 
 if __name__ == '__main__':
     main()
