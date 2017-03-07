@@ -31,7 +31,6 @@ def randomNum():
     """
     obj = json.load(urllib2.urlopen("https://xkcd.com/info.0.json"))
     latest = obj["num"]
-    print latest
     return randint(1, latest)
 
 def main():
