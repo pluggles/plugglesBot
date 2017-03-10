@@ -62,7 +62,7 @@ def getKeyWord(keywords):
     try:
         query = keywords
         query = urllib.quote_plus(query)
-        print query
+        #print query
         url = 'https://relevantxkcd.appspot.com/process?action=xkcd&query=' + query
         content = urllib2.urlopen(url).readlines()
         line = content[2].split(' ', 1)
