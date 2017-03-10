@@ -130,7 +130,7 @@ def getXkcd(bot, update, args):
     if len(args) == 0:
         xkcdUrl = xkcd.getStrip()
     else:
-        xkcdNumber = args[0]
+        xkcdNumber = ' '.join(args)
         xkcdUrl = xkcd.getStrip(xkcdNumber)
     bot.sendMessage(update.message.chat_id, xkcdUrl)
 def setQuote(bot, update, args):
