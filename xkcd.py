@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import pytz, sys, requests
-from bs4 import BeautifulSoup as bs
 from datetime import datetime
 from datetime import timedelta
 from random import randint
