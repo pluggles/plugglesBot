@@ -60,9 +60,9 @@ def randomNum():
     return randint(1, latest)
 def getKeyWord(keywords):
     try:
-        query = 'keywords'
+        query = keywords
         query = urllib.quote_plus(query)
-        #print query
+        print query
         url = 'https://relevantxkcd.appspot.com/process?action=xkcd&query=' + query
         content = urllib2.urlopen(url).readlines()
         line = content[2].split(' ', 1)
@@ -85,15 +85,17 @@ def ungzipResponse(r,b):
 def main():
 
    p = getStrip()
-   print p
+   #print p
    p=getStrip(44)
-   print p
+   #print p
    p=getStrip(7000)
-   print p
+   #print p
    p=getStrip("testing")
    print p
-   p=getStrip("444")
+   p=getStrip("linux")
    print p
+   p=getStrip("444")
+   #print p
    
 
 if __name__ == '__main__':
