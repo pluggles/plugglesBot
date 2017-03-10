@@ -61,7 +61,7 @@ def randomNum():
     return randint(1, latest)
 def getKeyWord(keywords):
     try:
-        query = 'fhejhfjewkhfe'
+        query = 'keywords'
         query = urllib.quote_plus(query)
         #print query
         url = 'https://relevantxkcd.appspot.com/process?action=xkcd&query=' + query
