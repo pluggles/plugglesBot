@@ -17,7 +17,7 @@ def getStrip(myArg= -1):
         myArg = str(randomNum())
         xkcd = 'https://xkcd.com/' + myArg
         altText = getAltText(myArg)
-    elif myArg == 0:
+    elif myArg == '0':
         myArg = str(getLatests())
         xkcd = 'https://xkcd.com/' + myArg
         altText = getAltText(myArg)
@@ -107,7 +107,7 @@ def main():
    print p
    p=getStrip("444")
    print p
-   p=getStrip(0)
+   p=getStrip('0')
    print p
    
 
