@@ -17,6 +17,10 @@ def getStrip(myArg= -1):
         myArg = str(randomNum())
         xkcd = 'https://xkcd.com/' + myArg
         altText = getAltText(myArg)
+    elif myArg == 0:
+        myArg = str(getLatests())
+        xkcd = 'https://xkcd.com/' + myArg
+        altText = getAltText(myArg)
     elif RepresentsInt(myArg) == False:
         myArg = getKeyWord(myArg)
         if myArg != -1:
@@ -32,7 +36,14 @@ def getStrip(myArg= -1):
     else:
         xkcd = "That was not a valid comic number."
         return xkcd
-    return xkcd + "\n" + altText 
+    return xkcd + "\n" + altText
+def getLatests():
+    try:
+        obj = json.load(urllib2.urlopen("https://xkcd.com/info.0.json"))
+        latest = int(obj["num"])
+        return latest
+    except:
+        return 1
 def validInput(arg):
     try:
         obj = json.load(urllib2.urlopen("https://xkcd.com/info.0.json"))
@@ -95,7 +106,9 @@ def main():
    p=getStrip("linux")
    print p
    p=getStrip("444")
-   #print p
+   print p
+   p=getStrip(0)
+   print p
    
 
 if __name__ == '__main__':
