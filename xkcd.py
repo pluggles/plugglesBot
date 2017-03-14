@@ -6,6 +6,9 @@ from random import randint
 import json
 import urllib2, urllib
 import re
+
+LatestComic = 0
+Updated = False
 def RepresentsInt(s):
     try: 
         int(s)
@@ -37,12 +40,23 @@ def getStrip(myArg= -1):
         xkcd = "That was not a valid comic number."
         return xkcd
     return xkcd + "\n" + altText
+def sendLatest():
+    latest = getLatests()
+    if Updated == True:
+        xkcd = 'https://xkcd.com/' + str(latest)
+        altText = getAltText(latest)
+        return xkcd + "\n" + altText
+    return ''
+
 def getLatests():
+    global Updated
     try:
         obj = json.load(urllib2.urlopen("https://xkcd.com/info.0.json"))
         latest = int(obj["num"])
+        Updated = storeLatest(latest)
         return latest
     except:
+        print "returning 1"
         return 1
 def validInput(arg):
     try:
@@ -92,23 +106,111 @@ def ungzipResponse(r,b):
         headers["Content-type"] = "text/html; charset=utf-8"
         r.set_data( html )
         b.set_response(r)
+def storeLatest(latest):
+    try:
+        global LatestComic
+        print "test: " + str(latest) + " " + str(LatestComic)
+        if int(LatestComic) != int(latest):
+            LatestComic = int(latest)
+            WriteLatest()
+            print "returning true from storelatest"
+            return True
+        return False
+    except:
+        print "error", sys.exc_info()[0]
+        return False
+def WriteLatest():
+    global LatestComic
+    f = open('latestxkcd.txt', 'w')
+    f.write(str(LatestComic))
+    f.close()
+def ReadLatestFromFile():
+    global LatestComic
+    f = open('latestxkcd.txt', 'r')
+    LatestComic= f.read().strip()
+    print "Read in: " + str(LatestComic)
+    f.close()
+def AddChatId(myId):
+    try:
+        file = 'xkcdChannels.txt'
+        with open(file) as f:
+            lines = f.read().splitlines()
+        if str(myId) in lines:
+            return "This chat is already receiving new xkcd notifcations"
+        else:
+            lines.append(str(myId))
+            f = open(file, 'w')
+            for line in lines:
+                f.write("%s\n" % line)
+            f.close
+            return "Chat will now get notified of new xkcds"
+    except:
+        print "error", sys.exc_info()[0]
+        return "something terrible may have just happened"
+def RemoveChatId(myId):
+    try:
+        file = 'xkcdChannels.txt'
+        with open(file) as f:
+            lines = f.read().splitlines()
+        if str(myId) in lines:
+            lines.remove(str(myId))
+            f = open(file, 'w')
+            for line in lines:
+                f.write("%s\n" % line)
+            f.close
+            return "Chat will no longer be notified of new xkcds"
+        else:
+            return "This chat isn't currently getting notified of new xkcds"
+            
+    except:
+        print "error", sys.exc_info()[0]
+        return "something terrible may have just happened"
+def GetChatIds():
+    file = 'xkcdChannels.txt'
+    with open(file) as f:
+        lines = f.read().splitlines()
+    return lines
 
 def main():
 
-   p = getStrip()
+   #p = getStrip()
    #print p
-   p=getStrip(44)
+   #p=getStrip(44)
    #print p
-   p=getStrip(7000)
+   #p=getStrip(7000)
    #print p
-   p=getStrip("testing")
+   #p=getStrip("testing")
+   #print p
+   #p=getStrip("linux")
+   #print p
+   #p=getStrip("444")
+   #print p
+   #p=getStrip('0')
+   #print p
+   #ReadLatestFromFile()
+   #p = sendLatest()
+   #print p
+   p = AddChatId(10)
    print p
-   p=getStrip("linux")
+   p = AddChatId(20)
    print p
-   p=getStrip("444")
+   p = AddChatId(15)
    print p
-   p=getStrip('0')
+   p = AddChatId(100)
    print p
+   p = GetChatIds()
+   for word in p:
+    print word
+   p = RemoveChatId(5)
+   print p
+   p = RemoveChatId(10)
+   print p
+   p = GetChatIds()
+   for word in p:
+    print word
+
+
+
    
 
 if __name__ == '__main__':

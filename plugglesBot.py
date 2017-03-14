@@ -34,7 +34,7 @@ users = dict()
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
-    update.message.reply_text('Hi! Welcome to my shitty bot try /help')
+    update.message.reply_text('Hi! Welcome to my bot try /help')
 
 
 def help(bot, update, args):
@@ -222,6 +222,23 @@ def parseMessage(bot, update):
             if len(word) > 3:
                 bot.sendMessage(update.message.chat_id, subreddit)
             #update.message.reply_text(subreddit)
+def notifyxkcd(bot, update, args):
+    if len(args) == 0:
+        myMessage = xkcd.AddChatId(update.message.chat_id)
+    elif args[0] == "remove":
+        myMessage = xkcd.RemoveChatId(update.message.chat_id)
+    else:
+        myMessage = "That was not a valid command"
+    bot.sendMessage(update.message.chat_id, myMessage)
+def checkLatestxkcd(bot, job):
+    newComic = xkcd.sendLatest()
+    if newComic = '':
+        return
+    else:
+        chatIds = xkcd.GetChatIds()
+        for chatId in chatIds:
+            bot.sendMessage(chatId, newComic)
+
 def main():
     # Create the EventHandler and pass it your bot's token.
     updater = Updater(myToken)
@@ -244,6 +261,7 @@ def main():
     dp.add_handler(CommandHandler("quote", getQuote, pass_args=True))
     dp.add_handler(CommandHandler("dilbert", getDilbert, pass_args=True))
     dp.add_handler(CommandHandler("xkcd", getXkcd, pass_args=True))
+    dp.add_handler(CommandHandler("notifyxkcd", notifyxkcd, pass_args=true))
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler([Filters.text], parseMessage))
 
@@ -252,6 +270,8 @@ def main():
 
     # Start the Bot
     findExistingAlerts(updater.job_queue)
+    xkcd.ReadLatestFromFile()
+    myJob = Job(checkLatestxkcd, 900, repeat=True, context=myContext)
     updater.start_polling()
 
     # Run the bot until the you presses Ctrl-C or the process receives SIGINT,
