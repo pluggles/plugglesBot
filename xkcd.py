@@ -41,19 +41,21 @@ def getStrip(myArg= -1):
         return xkcd
     return xkcd + "\n" + altText
 def sendLatest():
-    latest = getLatests()
+    latest = getLatests(1)
     if Updated == True:
         xkcd = 'https://xkcd.com/' + str(latest)
         altText = getAltText(latest)
         return xkcd + "\n" + altText
     return ''
 
-def getLatests():
+def getLatests(myArg = -1):
     global Updated
     try:
+        #print myArg
         obj = json.load(urllib2.urlopen("https://xkcd.com/info.0.json"))
         latest = int(obj["num"])
-        Updated = storeLatest(latest)
+        if myArg == 1:
+            Updated = storeLatest(latest)
         return latest
     except:
         print "returning 1"
@@ -183,12 +185,12 @@ def main():
    #print p
    #p=getStrip("444")
    #print p
-   #p=getStrip('0')
-   #print p
-   #ReadLatestFromFile()
-   #p = sendLatest()
-   #print p
-   p = AddChatId(10)
+   p=getStrip('0')
+   print p
+   ReadLatestFromFile()
+   p = sendLatest()
+   print p
+   '''p = AddChatId(10)
    print p
    p = AddChatId(20)
    print p
@@ -206,6 +208,7 @@ def main():
    p = GetChatIds()
    for word in p:
     print word
+    '''
 
 
 
