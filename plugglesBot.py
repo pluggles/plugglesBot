@@ -232,7 +232,7 @@ def notifyxkcd(bot, update, args):
     bot.sendMessage(update.message.chat_id, myMessage)
 def checkLatestxkcd(bot, job):
     newComic = xkcd.sendLatest()
-    if newComic = '':
+    if newComic == '':
         return
     else:
         chatIds = xkcd.GetChatIds()
@@ -261,7 +261,7 @@ def main():
     dp.add_handler(CommandHandler("quote", getQuote, pass_args=True))
     dp.add_handler(CommandHandler("dilbert", getDilbert, pass_args=True))
     dp.add_handler(CommandHandler("xkcd", getXkcd, pass_args=True))
-    dp.add_handler(CommandHandler("notifyxkcd", notifyxkcd, pass_args=true))
+    dp.add_handler(CommandHandler("notifyxkcd", notifyxkcd, pass_args=True))
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler([Filters.text], parseMessage))
 
@@ -270,8 +270,8 @@ def main():
 
     # Start the Bot
     findExistingAlerts(updater.job_queue)
-    xkcd.ReadLatestFromFile()
-    myJob = Job(checkLatestxkcd, 900, repeat=True, context=myContext)
+    xkcd.getLatests()
+    myJob = Job(checkLatestxkcd, 900, repeat=True, context="myContext")
     updater.start_polling()
 
     # Run the bot until the you presses Ctrl-C or the process receives SIGINT,

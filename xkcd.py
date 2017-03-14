@@ -109,11 +109,9 @@ def ungzipResponse(r,b):
 def storeLatest(latest):
     try:
         global LatestComic
-        print "test: " + str(latest) + " " + str(LatestComic)
         if int(LatestComic) != int(latest):
             LatestComic = int(latest)
             WriteLatest()
-            print "returning true from storelatest"
             return True
         return False
     except:
