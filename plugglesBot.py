@@ -231,6 +231,7 @@ def notifyxkcd(bot, update, args):
         myMessage = "That was not a valid command"
     bot.sendMessage(update.message.chat_id, myMessage)
 def checkLatestxkcd(bot, job):
+    print "Checking latest..."
     newComic = xkcd.sendLatest()
     if newComic == '':
         return
@@ -271,7 +272,8 @@ def main():
     # Start the Bot
     findExistingAlerts(updater.job_queue)
     xkcd.getLatests()
-    myJob = Job(checkLatestxkcd, 900, repeat=True, context="myContext")
+    myJob = Job(checkLatestxkcd, 15, repeat=True, context="myContext")
+    updater.job_queue.put(myJob)
     updater.start_polling()
 
     # Run the bot until the you presses Ctrl-C or the process receives SIGINT,
