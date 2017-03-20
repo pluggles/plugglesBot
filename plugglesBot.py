@@ -270,6 +270,7 @@ def main():
 
     # Start the Bot
     findExistingAlerts(updater.job_queue)
+    xkcd.ReadLatestFromFile()
     xkcd.getLatests()
     myJob = Job(checkLatestxkcd, 900, repeat=True, context="myContext")
     updater.job_queue.put(myJob)
