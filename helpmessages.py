@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 def mainHelp():
 	return """I can do a few things.
-Try '/help alert' or '/help fortune or /help quote'
+Try '/help alert' or '/help fortune or /help quote or even /help bash'
 
 That is basically it, and I am probably prone to breaking, and a shit ton of errors
 If I break I break deal with it.
@@ -35,3 +35,11 @@ def quoteHelp():
 	/quote <id>  :  gets a made quote from the chat you are in.
 	/setquote <message>  : sets a quote
 	/removequote <id>  :  removes a quote"""
+
+def bashHelp():
+	return """ Reutrns a quote from bash.org.
+	usage:
+	/bash : gets a random quote
+	/bash <id> : gets a specific quote
+	/bash top : get one of the top 200 quotes at random
+	"""

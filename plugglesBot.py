@@ -13,7 +13,8 @@ bot.
 with open('tokenfile.txt', 'r') as tokenfile:
     myToken = tokenfile.readline().rstrip()
 
-import telegram, random, logging, time, calendar, parsedatetime as pdt, pytz, re, alerts, dilbert, xkcd, fileIO, sys, fortune, helpmessages
+import telegram, random, logging, time, calendar, parsedatetime as pdt, pytz, re
+import alerts, dilbert, xkcd, fileIO, sys, fortune, helpmessages, bashQuotes
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
 from datetime import datetime
 from time import mktime
@@ -47,6 +48,9 @@ def help(bot, update, args):
         return
     elif len(args)> 0 and args[0] == "quote":
         bot.sendMessage(update.message.chat_id,helpmessages.quoteHelp())
+        return
+    elif len(args)> 0 and args[0] == "bash":
+        bot.sendMessage(update.message.chat_id,helpmessages.bashHelp())
         return
     update.message.reply_text(helpmessages.mainHelp())
 
@@ -222,6 +226,13 @@ def parseMessage(bot, update):
             if len(word) > 3:
                 bot.sendMessage(update.message.chat_id, subreddit)
             #update.message.reply_text(subreddit)
+def getBashQuotes(bot, update, args):
+    if len(args) == 0:
+        bashQuote = bashQuotes.getPost()
+    else:
+        specificQuoteNum = ' '.join(args)
+        bashQuote = bashQuotes.getPost(specificQuoteNum)
+    bot.sendMessage(update.message.chat_id, bashQuote)
 def notifyxkcd(bot, update, args):
     if len(args) == 0:
         myMessage = xkcd.AddChatId(update.message.chat_id)
@@ -262,6 +273,7 @@ def main():
     dp.add_handler(CommandHandler("dilbert", getDilbert, pass_args=True))
     dp.add_handler(CommandHandler("xkcd", getXkcd, pass_args=True))
     dp.add_handler(CommandHandler("notifyxkcd", notifyxkcd, pass_args=True))
+    dp.add_handler(CommandHandler("bash", getBashQuotes, pass_args=True))
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler([Filters.text], parseMessage))
 
