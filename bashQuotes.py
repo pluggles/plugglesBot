@@ -3,6 +3,7 @@ import pytz
 from datetime import datetime
 from datetime import timedelta
 import random
+import lxml
 from bs4 import BeautifulSoup
 import urllib
 import urllib2, urllib
