@@ -18,7 +18,7 @@ def getPost(postNumber = -1):
     elif (postNumber == 'top'):
         return randTop()
     elif RepresentsInt(postNumber) == False:
-        return getKewordPost(keywords)
+        return getKewordPost(postNumber)
     else:
         return "That was not a valid input try a number."
 
