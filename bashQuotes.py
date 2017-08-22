@@ -17,8 +17,25 @@ def getPost(postNumber = -1):
        return getSpecificPost(postNumber)
     elif (postNumber == 'top'):
         return randTop()
+    elif RepresentsInt(postNumber) == False:
+        return getKewordPost(keywords)
     else:
         return "That was not a valid input try a number."
+
+def getKewordPost(keywords):
+    query = keywords
+    query = urllib.quote_plus(query)
+    url = 'http://bash.org/?search=' +query +'&sort=0&show=25'
+    content = urllib2.urlopen(url).readlines()
+    #print content
+    r = urllib.urlopen(url).read()
+    #print r
+    soup = BeautifulSoup(r, "lxml")
+
+    mydivs = soup.findAll("p", { "class" : "qt" })
+    for row in mydivs:
+        return row.text.encode('utf-8')
+    return "No quote found matching tha search term..."
 
 def random_quote():
     url = 'http://www.bash.org/?random'
@@ -68,7 +85,7 @@ def RepresentsInt(s):
         return False
 
 def main():
-    print getPost('top')
+    print getKewordPost('twitter')
 
 
 if __name__ == '__main__':
