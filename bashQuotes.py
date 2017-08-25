@@ -35,7 +35,7 @@ def getKewordPost(keywords):
     mydivs = soup.findAll("p", { "class" : "qt" })
     for row in mydivs:
         return row.text.encode('utf-8')
-    return "No quote found matching tha search term..."
+    return "No quote found matching that search term..."
 
 def random_quote():
     url = 'http://www.bash.org/?random'
