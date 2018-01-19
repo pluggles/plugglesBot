@@ -14,7 +14,7 @@ with open('tokenfile.txt', 'r') as tokenfile:
     myToken = tokenfile.readline().rstrip()
 
 import telegram, random, logging, time, calendar, parsedatetime as pdt, pytz, re
-import alerts, dilbert, xkcd, fileIO, sys, fortune, helpmessages, bashQuotes
+import alerts, dilbert, xkcd, fileIO, sys, fortune, helpmessages, bashQuotes, alive
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
 from datetime import datetime
 from time import mktime
@@ -73,6 +73,8 @@ def getcowsay(bot, update, args):
 def getfortune(bot, update, args):
     args = ' '.join(args)
     bot.sendMessage(update.message.chat_id,fortune.fortune(args))
+def pong(bot, update):
+    update.message.reply_text("pong")
 def echo(bot, update):
     update.message.reply_text(update.message.text)
 
@@ -262,6 +264,7 @@ def main():
     dp.add_handler(CommandHandler("help", help, pass_args=True))
     dp.add_handler(CommandHandler("fortune", getfortune, pass_args=True))
     dp.add_handler(CommandHandler("cowsay", getcowsay, pass_args=True))
+    dp.add_handler(CommandHandler("ping", pong))
     dp.add_handler(CommandHandler("madcow", madcow))
     dp.add_handler(CommandHandler("alert", alert, pass_args=True, pass_job_queue=True))
     dp.add_handler(CommandHandler("remove", remove, pass_args=True))
