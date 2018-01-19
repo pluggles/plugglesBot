@@ -1,1 +1,5 @@
 tokenfile.txt
+*.pyc
+*.txt
+PlugglesBot/
+alerts
