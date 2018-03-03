@@ -39,7 +39,7 @@ def random_response():
 
 def main():
     #print random_response()
-    print isQuestion("how old am i?")
+    print isQuestion("Is it raining?")
     #print path_to_jar
     #print path_to_models_jar
 
@@ -70,6 +70,5 @@ def addQuestionMark(sentence):
     if (sentence.endswith('?') == False):
         sentence = sentence + '?'
     return sentence
-  return None
 if __name__ == '__main__':
     main()
