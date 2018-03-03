@@ -14,7 +14,7 @@ with open('tokenfile.txt', 'r') as tokenfile:
     myToken = tokenfile.readline().rstrip()
 
 import telegram, random, logging, time, calendar, parsedatetime as pdt, pytz, re
-import alerts, dilbert, xkcd, fileIO, sys, fortune, helpmessages, bashQuotes, alive
+import alerts, dilbert, xkcd, eightBall, fileIO, sys, fortune, helpmessages, bashQuotes, alive
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
 from datetime import datetime
 from time import mktime
@@ -73,6 +73,9 @@ def getcowsay(bot, update, args):
 def getfortune(bot, update, args):
     args = ' '.join(args)
     bot.sendMessage(update.message.chat_id,fortune.fortune(args))
+def getEightBall(bot, update, args):
+    args = ' '.join(args)
+    bot.sendMessage(update.message.chat_id, eightBall.isQuestion(args))
 def pong(bot, update):
     update.message.reply_text("pong")
 def echo(bot, update):
@@ -277,6 +280,7 @@ def main():
     dp.add_handler(CommandHandler("xkcd", getXkcd, pass_args=True))
     dp.add_handler(CommandHandler("notifyxkcd", notifyxkcd, pass_args=True))
     dp.add_handler(CommandHandler("bash", getBashQuotes, pass_args=True))
+    dp.add_handler(CommandHandler("8ball", getEightBall, pass_args=True))
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler([Filters.text], parseMessage))
 
