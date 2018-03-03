@@ -14,7 +14,7 @@ with open('tokenfile.txt', 'r') as tokenfile:
     myToken = tokenfile.readline().rstrip()
 
 import telegram, random, logging, time, calendar, parsedatetime as pdt, pytz, re
-import alerts, dilbert, xkcd, eightBall, fileIO, sys, fortune, helpmessages, bashQuotes, alive
+import alerts, dilbert, xkcd, eightBall, fileIO, sys, fortune, helpmessages, bashQuotes
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
 from datetime import datetime
 from time import mktime
