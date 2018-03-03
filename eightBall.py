@@ -39,7 +39,7 @@ def random_response():
 
 def main():
     #print random_response()
-    print isQuestion("how old am i?")
+    print isQuestion("should we go out to GR")
     #print path_to_jar
     #print path_to_models_jar
 
@@ -50,7 +50,7 @@ def isQuestion(sentence):
     
     #print type(result)
     for line in result:
-        #line.draw()
+        line.draw()
         if(isValidQuestion(line, 'SQ')):
             return random_response()
         return "I don't think I can answer that."
@@ -70,6 +70,5 @@ def addQuestionMark(sentence):
     if (sentence.endswith('?') == False):
         sentence = sentence + '?'
     return sentence
-  return None
 if __name__ == '__main__':
     main()
