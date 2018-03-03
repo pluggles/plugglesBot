@@ -75,6 +75,7 @@ def getfortune(bot, update, args):
     bot.sendMessage(update.message.chat_id,fortune.fortune(args))
 def getEightBall(bot, update, args):
     args = ' '.join(args)
+    bot.sendMessage(update.message.chat_id, "Give me a few seconds to ponder this...")
     bot.sendMessage(update.message.chat_id, eightBall.isQuestion(args))
 def pong(bot, update):
     update.message.reply_text("pong")
