@@ -39,11 +39,7 @@ def random_response():
 
 def main():
     #print random_response()
-<<<<<<< HEAD
-    print isQuestion("should we go out to GR")
-=======
     print isQuestion("Is it raining?")
->>>>>>> c082c17252d9d8f94819fb62008b8d69740b4cd1
     #print path_to_jar
     #print path_to_models_jar
 
