@@ -50,7 +50,7 @@ def isQuestion(sentence):
     
     #print type(result)
     for line in result:
-        line.draw()
+        #line.draw()
         if(isValidQuestion(line, 'SQ')):
             return random_response()
         return "I don't think I can answer that."
