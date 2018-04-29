@@ -292,15 +292,14 @@ def main():
     findExistingAlerts(updater.job_queue)
     xkcd.ReadLatestFromFile()
     xkcd.getLatests()
-    myJob = Job(checkLatestxkcd, 900, repeat=True, context="myContext")
-    updater.job_queue.put(myJob)
+    #myJob = Job(checkLatestxkcd, 900, repeat=True, context="myContext")
+    updater.job_queue.run_repeating(checkLatestxkcd, interval=900, first=0)
     updater.start_polling()
 
     # Run the bot until the you presses Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
-
 
 if __name__ == '__main__':
     main()
