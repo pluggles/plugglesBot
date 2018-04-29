@@ -126,7 +126,7 @@ def alert(bot, update, args, job_queue):
     users[myContext] = user
     messages[myContext] = message
     timers[myContext] = job
-    job_queue.put(job)
+    job_queue.run_once(alarm, due, context=myContext)
     t = datetime.now()
     due = int((t-datetime(1970,1,1)).total_seconds() + due)
     fileIO.writeAlertJob("alerts", str(chat_id), str(message_id), user, due, message)
@@ -293,7 +293,7 @@ def main():
     xkcd.ReadLatestFromFile()
     xkcd.getLatests()
     #myJob = Job(checkLatestxkcd, 900, repeat=True, context="myContext")
-    updater.job_queue.run_repeating(checkLatestxkcd, interval=900, first=0)
+    updater.job_queue.run_repeating(checkLatestxkcd, interval=900, first=0, context="myContext")
     updater.start_polling()
 
     # Run the bot until the you presses Ctrl-C or the process receives SIGINT,
