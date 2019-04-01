@@ -32,9 +32,10 @@ import re
 from datetime import datetime
 #from time import mktime
 import telegram
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job, RegexHandler, ConversationHandler
 #from pytz import timezone
 import alerts
+import approval
 import dilbert
 import xkcd
 import eightBall
@@ -55,6 +56,8 @@ TIMERS = dict()
 MESSAGES = dict()
 USERS = dict()
 
+PHOTO, TYPING_REPLY, TYPING_CHOICE = range(3)
+
 
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
@@ -67,6 +70,70 @@ def start(bot, update):
     """
     update.message.reply_text('Hi! Welcome to my bot try /help')
 
+def startUpload(bot, update):
+    update.message.reply_text(
+        "Hi! My name is PlugglesBot. Lets try and set an approval photo for you."
+        " Please send me an image."
+        " If you don't want to add or update your image, just send /skip "
+        "If you would like to remove an approval photo you set for yourself send /removeapproval",
+        reply_markup=telegram.ReplyKeyboardRemove())
+
+    return PHOTO
+
+def photo(bot, update):
+    user = update.message.from_user
+    photo_file = update.message.photo[-1].get_file()
+    photo_file.download('images/approval_' + str(user.id) + '.jpg')
+
+    #LOGGER.info("Photo of %s: %s", user.first_name, 'images/approval_' + str(user.id) + '.jpg')
+    update.message.reply_text('Gorgeous! now whenever you do /approve you will see this image. '
+       'If you would like to change your approval image Say /approvalphoto'
+       'If you would like to remove an approval photo you set for yourself send /removeapproval' )
+    return ConversationHandler.END
+
+def skip_photo(bot, update):
+    user = update.message.from_user
+    #LOGGER.info("User %s did not send a photo.", user.first_name)
+    update.message.reply_text('If you change your mind just send /approvalphoto again.')
+
+    return ConversationHandler.END
+
+def get_approval_photo(bot, update, args):
+    """Summary
+
+    Args:
+        bot (TYPE): The bot, always good to send
+        update (TYPE): the message handler
+        args (TYPE): Description
+    """
+    args = ' '.join(args)
+    user = update.message.from_user
+    photopath = approval.approves(user.id)
+    #bot.sendMessage(update.message.chat_id, eightBall.isQuestion(args))
+    bot.send_photo(chat_id=update.message.chat_id, photo=open(photopath, 'rb'))
+    if ('default' in photopath):
+        update.message.reply_text("You can set your own approval photo with /approvalphoto")
+
+def remove_approval_photo(bot, update, args):
+    """Summary
+
+    Args:
+        bot (TYPE): The bot, always good to send
+        update (TYPE): the message handler
+        args (TYPE): Description
+    """
+    args = ' '.join(args)
+    user = update.message.from_user
+    photopath = approval.approves(user.id)
+    #bot.sendMessage(update.message.chat_id, eightBall.isQuestion(args))
+    response = approval.deleteApprovalPhoto(user.id)
+    update.message.reply_text(response)
+
+def cancel(bot, update):
+    user = update.message.from_user
+    #LOGGER.info("User %s canceled the conversation.", user.first_name)
+    update.message.reply_text('Bye! I hope we can talk again some day.',
+                              reply_markup=telegram.ReplyKeyboardRemove())
 
 def bot_help(bot, update, args):
     """Summary
@@ -552,11 +619,32 @@ def main():
         "bash", get_bash_quotes, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "8ball", get_eight_ball, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "approve", get_approval_photo, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "removeapproval", remove_approval_photo, pass_args=True))
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler([Filters.text], parse_message))
 
     # log all errors
     dispatcher.add_error_handler(bot_error)
+
+    # begin conversation handler
+    # Add conversation handler with the states CHOOSING, TYPING_CHOICE and TYPING_REPLY
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('approvalphoto', startUpload)],
+
+        states={
+            PHOTO: [MessageHandler(Filters.photo, photo),
+                    CommandHandler('skip', skip_photo)]
+        },
+
+        fallbacks=[CommandHandler('cancel', cancel)],
+
+        conversation_timeout = 60
+    )
+
+    dispatcher.add_handler(conv_handler)
 
     # Start the Bot
     find_existing_alerts(updater.job_queue)
