@@ -17,6 +17,17 @@ def approves(userID):
 		#else send default pictte
 	#return p
 
+def disapproves(userID):
+	EnsureDirExists('images')
+	if EnsureFileExists('images/disapproval_' + str(userID) + '.jpg'):
+		return 'images/disapproval_' + str(userID) + '.jpg'
+	else:
+		return 'images/disapproval_default'
+		#check if userID has a picuture
+		#is so send that picture back
+		#else send default pictte
+	#return p
+
 def EnsureDirExists(path):
     if not os.path.exists(path):
         os.mkdir(path)
@@ -30,6 +41,12 @@ def deleteApprovalPhoto(userID):
 		os.remove('images/approval_' + str(userID) + '.jpg')
 		return "your photo has been removed with extreme prejudice"
 	return "you don't have any approval photos added, you can add one with /approvalphoto"
+
+def deleteDisapprovalPhoto(userID):
+	if os.path.exists('images/disapproval_' + str(userID) + '.jpg'):
+		os.remove('images/disapproval_' + str(userID) + '.jpg')
+		return "your photo has been removed with extreme prejudice"
+	return "you don't have any disapproval photos added, you can add one with /disapprovalphoto"
 def main():
 	print approves("0001")
   

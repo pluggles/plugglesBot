@@ -56,7 +56,7 @@ TIMERS = dict()
 MESSAGES = dict()
 USERS = dict()
 
-PHOTO, TYPING_REPLY, TYPING_CHOICE = range(3)
+PHOTO, TYPING_REPLY, TYPING_CHOICE, DISAPPROVALPHOTO = range(4)
 
 
 # Define a few command handlers. These usually take the two arguments bot and
@@ -80,6 +80,16 @@ def startUpload(bot, update):
 
     return PHOTO
 
+def startDisapprovalUpload(bot, update):
+    update.message.reply_text(
+        "Hi! My name is PlugglesBot. Lets try and set a disapproval photo for you."
+        " Please send me an image."
+        " If you don't want to add or update your image, just send /skip "
+        "If you would like to remove an approval photo you set for yourself send /removeapproval",
+        reply_markup=telegram.ReplyKeyboardRemove())
+
+    return PHOTO
+
 def photo(bot, update):
     user = update.message.from_user
     photo_file = update.message.photo[-1].get_file()
@@ -91,10 +101,21 @@ def photo(bot, update):
        ' If you would like to remove an approval photo you set for yourself send /removeapproval' )
     return ConversationHandler.END
 
+def disapprovalPhoto(bot, update):
+    user = update.message.from_user
+    photo_file = update.message.photo[-1].get_file()
+    photo_file.download('images/disapproval_' + str(user.id) + '.jpg')
+
+    LOGGER.info("Photo of %s: %s", user.first_name, 'images/disapproval_' + str(user.id) + '.jpg')
+    update.message.reply_text('Gorgeous! now whenever you do /disapprove you will see this image. '
+       'If you would like to change your disapproval image Say /disapprovalphoto'
+       ' If you would like to remove a disapproval photo you set for yourself send /removedisapproval' )
+    return ConversationHandler.END
+
 def skip_photo(bot, update):
     user = update.message.from_user
     #LOGGER.info("User %s did not send a photo.", user.first_name)
-    update.message.reply_text('If you change your mind just send /approvalphoto again.')
+    update.message.reply_text('If you change your mind just send /approvalphoto (or /disapprovalphoto) again.')
 
     return ConversationHandler.END
 
@@ -109,10 +130,24 @@ def get_approval_photo(bot, update, args):
     args = ' '.join(args)
     user = update.message.from_user
     photopath = approval.approves(user.id)
-    #bot.sendMessage(update.message.chat_id, eightBall.isQuestion(args))
     bot.send_photo(chat_id=update.message.chat_id, photo=open(photopath, 'rb'))
     if ('default' in photopath):
         update.message.reply_text("You can set your own approval photo with /approvalphoto")
+
+def get_disapproval_photo(bot, update, args):
+    """Summary
+
+    Args:
+        bot (TYPE): The bot, always good to send
+        update (TYPE): the message handler
+        args (TYPE): Description
+    """
+    args = ' '.join(args)
+    user = update.message.from_user
+    photopath = approval.disapproves(user.id)
+    bot.send_photo(chat_id=update.message.chat_id, photo=open(photopath, 'rb'))
+    if ('default' in photopath):
+        update.message.reply_text("You can set your own disapproval photo with /disapprovalphoto")
 
 def remove_approval_photo(bot, update, args):
     """Summary
@@ -127,6 +162,21 @@ def remove_approval_photo(bot, update, args):
     photopath = approval.approves(user.id)
     #bot.sendMessage(update.message.chat_id, eightBall.isQuestion(args))
     response = approval.deleteApprovalPhoto(user.id)
+    update.message.reply_text(response)
+
+def remove_disapproval_photo(bot, update, args):
+    """Summary
+
+    Args:
+        bot (TYPE): The bot, always good to send
+        update (TYPE): the message handler
+        args (TYPE): Description
+    """
+    args = ' '.join(args)
+    user = update.message.from_user
+    photopath = approval.disapproves(user.id)
+    #bot.sendMessage(update.message.chat_id, eightBall.isQuestion(args))
+    response = approval.deleteDisapprovalPhoto(user.id)
     update.message.reply_text(response)
 
 def cancel(bot, update):
@@ -623,6 +673,10 @@ def main():
         "approve", get_approval_photo, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "removeapproval", remove_approval_photo, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "disapprove", get_disapproval_photo, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "removedisapproval", remove_disapproval_photo, pass_args=True))
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler([Filters.text], parse_message))
 
@@ -631,7 +685,7 @@ def main():
 
     # begin conversation handler
     # Add conversation handler with the states CHOOSING, TYPING_CHOICE and TYPING_REPLY
-    conv_handler = ConversationHandler(
+    approve_conv_handler = ConversationHandler(
         entry_points=[CommandHandler('approvalphoto', startUpload)],
 
         states={
@@ -644,7 +698,21 @@ def main():
         conversation_timeout = 300
     )
 
-    dispatcher.add_handler(conv_handler)
+    disapprove_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('disapprovalphoto', startDisapprovalUpload)],
+
+        states={
+            PHOTO: [MessageHandler(Filters.photo, disapprovalPhoto),
+                    CommandHandler('skip', skip_photo)]
+        },
+
+        fallbacks=[CommandHandler('cancel', cancel)],
+
+        conversation_timeout = 300
+    )
+
+    dispatcher.add_handler(approve_conv_handler)
+    dispatcher.add_handler(disapprove_conv_handler)
 
     # Start the Bot
     find_existing_alerts(updater.job_queue)
