@@ -88,7 +88,7 @@ def photo(bot, update):
     #LOGGER.info("Photo of %s: %s", user.first_name, 'images/approval_' + str(user.id) + '.jpg')
     update.message.reply_text('Gorgeous! now whenever you do /approve you will see this image. '
        'If you would like to change your approval image Say /approvalphoto'
-       'If you would like to remove an approval photo you set for yourself send /removeapproval' )
+       ' If you would like to remove an approval photo you set for yourself send /removeapproval' )
     return ConversationHandler.END
 
 def skip_photo(bot, update):
