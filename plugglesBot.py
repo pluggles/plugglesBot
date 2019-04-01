@@ -641,7 +641,7 @@ def main():
 
         fallbacks=[CommandHandler('cancel', cancel)],
 
-        conversation_timeout = 60
+        conversation_timeout = 300
     )
 
     dispatcher.add_handler(conv_handler)
