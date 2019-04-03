@@ -551,7 +551,7 @@ def get_bash_quotes(bot, update, args):
         update (TYPE): the message handler
         args (TYPE): Description
     """
-    if not args == 0:
+    if not args:
         bash_quote = bashQuotes.getPost()
     else:
         specific_quote_num = ' '.join(args)
