@@ -44,6 +44,7 @@ import fileIO
 import fortune
 import helpmessages
 import bashQuotes
+import trivia
 import motorcycleUpdates
 
 
@@ -242,7 +243,8 @@ def get_cowsay(bot, update, args):
     message = message.replace(">", "&gt;")
     bot.sendMessage(update.message.chat_id, text="<code>" + message + "</code>",
                     parse_mode=telegram.ParseMode.HTML)
-
+def get_trivia(bot, update, args):
+    bot.sendMessage(update.message.chat_id, trivia.get_trivia())
 
 def get_fortune(bot, update, args):
     """Summary
@@ -552,10 +554,10 @@ def get_bash_quotes(bot, update, args):
         args (TYPE): Description
     """
     if not args:
-        bash_quote = bashQuotes.getPost()
+        bash_quote = bashQuotes.get_post()
     else:
         specific_quote_num = ' '.join(args)
-        bash_quote = bashQuotes.getPost(specific_quote_num)
+        bash_quote = bashQuotes.get_post(specific_quote_num)
     bot.sendMessage(update.message.chat_id, bash_quote)
 
 
@@ -660,6 +662,8 @@ def main():
     dispatcher.add_handler(CommandHandler("quote", get_quote, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "dilbert", get_dilbert, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "trivia", get_trivia, pass_args=True))
     dispatcher.add_handler(CommandHandler("xkcd", get_xkcd, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "notifyxkcd", notify_xkcd, pass_args=True))
