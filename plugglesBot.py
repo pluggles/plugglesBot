@@ -102,6 +102,8 @@ def photo(bot, update):
        ' If you would like to remove an approval photo you set for yourself send /removeapproval' )
     return ConversationHandler.END
 def alex(bot, update):
+    photoPath = alexPhoto.Alex()
+    bot.send_photo(chat_id=update.message.chat_id, photo=open(photopath, 'rb'))
 
 def disapprovalPhoto(bot, update):
     user = update.message.from_user
