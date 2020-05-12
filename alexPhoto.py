@@ -31,7 +31,7 @@ def EnsureFileExists(filename):
         return False
     return True
 def AddPhoto(tempPhoto):
-	print "not implemented"
+	return "not implemented"
 
 def deleteDisapprovalPhoto(userID):
 	if os.path.exists('images/disapproval_' + str(userID) + '.jpg'):
