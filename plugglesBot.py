@@ -81,6 +81,15 @@ def startUpload(bot, update):
 
     return PHOTO
 
+def startAddAlex(bot, update):
+    update.message.reply_text(
+        "Hi! My name is PlugglesBot. Lets try and add a photo."
+        " Please send me an image."
+        " If you don't want to add an image, just send /skip ",
+        reply_markup=telegram.ReplyKeyboardRemove())
+
+    return PHOTO
+
 def startDisapprovalUpload(bot, update):
     update.message.reply_text(
         "Hi! My name is PlugglesBot. Lets try and set a disapproval photo for you."
@@ -101,9 +110,26 @@ def photo(bot, update):
        'If you would like to change your approval image Say /approvalphoto'
        ' If you would like to remove an approval photo you set for yourself send /removeapproval' )
     return ConversationHandler.END
+def addAlex(bot, update):
+    randfilename = random.randint(0,10000)
+    tempFile = "AlexPhotos/temp" + str(randfilename)
+    photo_file = update.message.photo[-1].get_file()
+    photo_file.download(tempFile)
+    result = alexPhoto.AddPhoto(photo_file)
+    update.message.reply_text(result)
+    """ if (result[0]):
+        update.message.reply_text('Photo added: thank you for your contribution, he will never be forgotten')
+    else:
+        update.message.reply_text('Looks like that photo matches the following photo')
+        bot.send_photo(chat_id=update.message.chat_id, photo=open(result[1], 'rb'))
+        update.message.reply_text('If they are not the same pbotos, or well, what do you expect of me, i am just a dumb bot')
+"""
 def alex(bot, update):
     photoPath = alexPhoto.Alex()
-    bot.send_photo(chat_id=update.message.chat_id, photo=open(photoPath, 'rb'))
+    if photoPath.endswitch(".mov") or photoPath.endswitch(".mp3"):
+        bot.send_photo(chat_id=update.message.chat_id, video=open(photoPath, 'rb'), supports_streaming=True)
+    else:
+        bot.send_photo(chat_id=update.message.chat_id, photo=open(photoPath, 'rb'))
 
 def disapprovalPhoto(bot, update):
     user = update.message.from_user
@@ -121,6 +147,11 @@ def skip_photo(bot, update):
     #LOGGER.info("User %s did not send a photo.", user.first_name)
     update.message.reply_text('If you change your mind just send /approvalphoto (or /disapprovalphoto) again.')
 
+    return ConversationHandler.END
+def skip_alex_photo(bot, update):
+    user = update.message.from_user
+    #LOGGER.info("User %s did not send a photo.", user.first_name)
+    update.message.reply_text("Looks like you didn't want to upload an alex file, no worries")
     return ConversationHandler.END
 
 def get_approval_photo(bot, update, args):
@@ -701,6 +732,18 @@ def main():
                     CommandHandler('skip', skip_photo)]
         },
 
+        fallbacks=[CommandHandler('cancel', cancel)],
+
+        conversation_timeout = 300
+    )
+
+    add_alex_handler = ConversationHandler(
+        entry_points=[CommandHandler('addAlexMedia', startAddAlex)],
+
+        states={
+        PHOTO: [MessageHandler(Filters.photo, addAlex),
+                CommandHandler('skip', skip_alex_photo)]
+        },
         fallbacks=[CommandHandler('cancel', cancel)],
 
         conversation_timeout = 300
