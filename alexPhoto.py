@@ -9,7 +9,7 @@ upload specific phots for know users
 default photo for unknow
 give option to uplaod your own image'''
 ImgPath = "AlexPhotos"
-def Alex():list
+def Alex():
 	EnsureDirExists(ImgPath)
 	if os.listdir(ImgPath) == []:
 		return 'No Photos Exist'
@@ -31,7 +31,7 @@ def EnsureFileExists(filename):
         return False
     return True
 def AddPhoto(tempPhoto):
-	
+	print "not implemented"
 
 def deleteDisapprovalPhoto(userID):
 	if os.path.exists('images/disapproval_' + str(userID) + '.jpg'):
