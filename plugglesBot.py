@@ -20,7 +20,7 @@ Attributes:
 with open('tokenfile.txt', 'r') as tokenfile:
     MYTOKEN = tokenfile.readline().rstrip()
 
-
+import alexPhoto
 import random
 import logging
 #import time
@@ -101,6 +101,7 @@ def photo(bot, update):
        'If you would like to change your approval image Say /approvalphoto'
        ' If you would like to remove an approval photo you set for yourself send /removeapproval' )
     return ConversationHandler.END
+def alex(bot, update):
 
 def disapprovalPhoto(bot, update):
     user = update.message.from_user
@@ -649,6 +650,7 @@ def main():
     dispatcher.add_handler(CommandHandler(
         "cowsay", get_cowsay, pass_args=True))
     dispatcher.add_handler(CommandHandler("ping", pong))
+    dispatcher.add_handler(CommandHandler("alex", alex))
     dispatcher.add_handler(CommandHandler("madcow", madcow))
     dispatcher.add_handler(CommandHandler(
         "alert", alert, pass_args=True, pass_job_queue=True))
