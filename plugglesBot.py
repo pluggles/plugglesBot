@@ -103,7 +103,7 @@ def photo(bot, update):
     return ConversationHandler.END
 def alex(bot, update):
     photoPath = alexPhoto.Alex()
-    bot.send_photo(chat_id=update.message.chat_id, photo=open(photopath, 'rb'))
+    bot.send_photo(chat_id=update.message.chat_id, photo=open(photoPath, 'rb'))
 
 def disapprovalPhoto(bot, update):
     user = update.message.from_user
