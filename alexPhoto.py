@@ -16,7 +16,7 @@ def Alex():
 	else:
 		choice = random.choice(os.listdir(ImgPath))
 		print choice
-		return choice
+		return ImgPath + "\\" + choice
 		#check if userID has a picuture
 		#is so send that picture back
 		#else send default pictte
