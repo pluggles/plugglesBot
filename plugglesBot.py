@@ -709,6 +709,7 @@ def main():
         "disapprove", get_disapproval_photo, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "removedisapproval", remove_disapproval_photo, pass_args=True))
+
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler([Filters.text], parse_message))
 
@@ -757,6 +758,7 @@ def main():
 
     dispatcher.add_handler(approve_conv_handler)
     dispatcher.add_handler(disapprove_conv_handler)
+    dispatcher.add_handler(add_alex_handler)
 
     # Start the Bot
     find_existing_alerts(updater.job_queue)
