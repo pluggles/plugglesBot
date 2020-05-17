@@ -117,13 +117,6 @@ def addAlexPhoto(bot, update):
     photo_file.download(tempFile)
     update.message.reply_text("Photo Added")
     
-def addAlexVideo(bot, update):
-    randfilename = random.randint(0,10000)
-    tempFile = "AlexPhotos/added-" + str(randfilename) + ".mp4"
-    video_file = update.message.video[-1].get_file()
-    video_file.download(tempFile)
-    update.message.reply_text("video Added")
-    
 def alex(bot, update):
     photoPath = alexPhoto.Alex()
     if photoPath.endswith(".mov") or photoPath.endswith(".mp4"):
@@ -743,9 +736,7 @@ def main():
 
         states={
         PHOTO: [MessageHandler(Filters.photo, addAlexPhoto),
-                CommandHandler('skip', skip_alex_photo)],
-        PHOTO: [MessageHandler(Filters.video, addAlexVideo),
-                    CommandHandler('skip', skip_photo)],
+                CommandHandler('skip', skip_alex_photo)]
         },
         fallbacks=[CommandHandler('cancel', cancel)],
 
