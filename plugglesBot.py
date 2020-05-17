@@ -744,7 +744,7 @@ def main():
         states={
         PHOTO: [MessageHandler(Filters.photo, addAlexPhoto),
                 CommandHandler('skip', skip_alex_photo)],
-        VIDEO: [MessageHandler(Filters.video, addAlexVideo),
+        PHOTO: [MessageHandler(Filters.video, addAlexVideo),
                     CommandHandler('skip', skip_photo)],
         },
         fallbacks=[CommandHandler('cancel', cancel)],
