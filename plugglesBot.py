@@ -126,7 +126,7 @@ def addAlex(bot, update):
 """
 def alex(bot, update):
     photoPath = alexPhoto.Alex()
-    if photoPath.endswitch(".mov") or photoPath.endswitch(".mp3"):
+    if photoPath.endswitch(".mov") or photoPath.endswitch(".mp4"):
         bot.send_photo(chat_id=update.message.chat_id, video=open(photoPath, 'rb'), supports_streaming=True)
     else:
         bot.send_photo(chat_id=update.message.chat_id, photo=open(photoPath, 'rb'))
