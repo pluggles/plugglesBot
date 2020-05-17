@@ -112,18 +112,11 @@ def photo(bot, update):
     return ConversationHandler.END
 def addAlex(bot, update):
     randfilename = random.randint(0,10000)
-    tempFile = "AlexPhotos/temp" + str(randfilename)
+    tempFile = "AlexPhotos/added-" + str(randfilename) + ".jpg"
     photo_file = update.message.photo[-1].get_file()
     photo_file.download(tempFile)
-    result = alexPhoto.AddPhoto(photo_file)
-    update.message.reply_text(result)
-    """ if (result[0]):
-        update.message.reply_text('Photo added: thank you for your contribution, he will never be forgotten')
-    else:
-        update.message.reply_text('Looks like that photo matches the following photo')
-        bot.send_photo(chat_id=update.message.chat_id, photo=open(result[1], 'rb'))
-        update.message.reply_text('If they are not the same pbotos, or well, what do you expect of me, i am just a dumb bot')
-"""
+    update.message.reply_text("Photo Added")
+    
 def alex(bot, update):
     photoPath = alexPhoto.Alex()
     if photoPath.endswitch(".mov") or photoPath.endswitch(".mp4"):
