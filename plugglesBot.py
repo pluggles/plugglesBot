@@ -46,6 +46,7 @@ import helpmessages
 import bashQuotes
 import trivia
 import motorcycleUpdates
+import myspeedtest
 
 
 # Enable logging
@@ -658,6 +659,44 @@ def check_latest_motorcycle(bot, job):
         for chat_id in chat_ids:
             bot.sendMessage(chat_id, motrcycleValue)
 
+def notify_speedTest(bot, update, args):
+    """Summary
+
+    Args:
+        bot (TYPE): The bot, always good to send
+        update (TYPE): the message handler
+        args (TYPE): Description
+    """
+    if not args:
+        my_message = myspeedtest.AddChatId(update.message.chat_id)
+    elif args[0] == "remove":
+        my_message = myspeedtest.RemoveChatId(update.message.chat_id)
+    else:
+        my_message = "That was not a valid command"
+    bot.sendMessage(update.message.chat_id, my_message)
+def check_latest_speedTest(bot, job):
+    """Summary
+
+    Args:
+        bot (TYPE): Description
+        job (TYPE): Description
+
+    Returns:
+        TYPE: Description
+    """
+    chat_ids = myspeedtest.GetChatIds()
+    speedInfo = myspeedtest.get_internet_speeds()
+    for chat_id in chat_ids:
+        bot.sendMessage(chat_id, speedInfo)
+
+def speedTest(bot, update):
+    """Summary
+
+    Args:
+        bot (TYPE): The bot, always good to send
+        update (TYPE): the message handler
+    """
+    bot.sendMessage(update.message.chat_id, myspeedtest.get_internet_speeds())
 
 def main():
     """Summary
@@ -697,6 +736,9 @@ def main():
         "notifyxkcd", notify_xkcd, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "notifymotorcycle", notify_motorcyle, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "notifyspeedtest", notify_speedTest, pass_args=True))
+    dispatcher.add_handler(CommandHandler("speed", speedTest))
     dispatcher.add_handler(CommandHandler(
         "bash", get_bash_quotes, pass_args=True))
     dispatcher.add_handler(CommandHandler(
@@ -768,7 +810,7 @@ def main():
     updater.job_queue.run_repeating(
         check_latest_xkcd, interval=900, first=0, context="my_context")
     updater.job_queue.run_repeating(
-        check_latest_motorcycle, interval=3600, first=0, context="my_context")
+        check_latest_speedTest, interval=3600, first=0, context="my_context")
     updater.start_polling()
 
     # Run the bot until the you presses Ctrl-C or the process receives SIGINT,
