@@ -1,6 +1,8 @@
 #Python progam to test and log internet speed
 
 import speedtest
+import os
+import sys
 import math
 def AddChatId(myId):
     try:
