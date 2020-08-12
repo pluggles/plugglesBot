@@ -2,7 +2,52 @@
 
 import speedtest
 import math
-
+def AddChatId(myId):
+    try:
+        file = 'speedtest.txt'
+        EnsureFileExists(file)
+        with open(file) as f:
+            lines = f.read().splitlines()
+        if str(myId) in lines:
+            return "This chat is already receiving internet speed info"
+        else:
+            lines.append(str(myId))
+            f = open(file, 'w')
+            for line in lines:
+                f.write("%s\n" % line)
+            f.close
+            return "Chat will now get notified of interntet speed info"
+    except:
+        print "error", sys.exc_info()[0]
+        return "something terrible may have just happened"
+def RemoveChatId(myId):
+    try:
+        file = 'speedtest.txt'
+        EnsureFileExists(file)
+        with open(file) as f:
+            lines = f.read().splitlines()
+        if str(myId) in lines:
+            lines.remove(str(myId))
+            f = open(file, 'w')
+            for line in lines:
+                f.write("%s\n" % line)
+            f.close
+            return "Chat will no longer be notified of internet speed info"
+        else:
+            return "This chat isn't currently getting notified of internet speed info"
+            
+    except:
+        print "error", sys.exc_info()[0]
+        return "something terrible may have just happened"
+def GetChatIds():
+    file = 'speedtest.txt'
+    EnsureFileExists(file)
+    with open(file) as f:
+        lines = f.read().splitlines()
+    return lines
+def EnsureFileExists(filename):
+    if not os.path.exists(filename):
+        file(filename, 'w').close()
 def convert_size(size_bytes):
     if size_bytes == 0:
         return "0B"
