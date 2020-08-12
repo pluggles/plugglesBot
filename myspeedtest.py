@@ -18,7 +18,7 @@ def AddChatId(myId):
             for line in lines:
                 f.write("%s\n" % line)
             f.close
-            return "Chat will now get notified of interntet speed info"
+            return "Chat will now get notified of internet speed info"
     except:
         print "error", sys.exc_info()[0]
         return "something terrible may have just happened"
