@@ -808,7 +808,7 @@ def main():
     xkcd.getLatests()
     #myJob = Job(checkLatestxkcd, 900, repeat=True, context="my_context")
     updater.job_queue.run_repeating(
-        check_latest_xkcd, interval=900, first=0, context="my_context")
+        check_latest_xkcd, interval=86400, first=0, context="my_context")
     updater.job_queue.run_repeating(
         check_latest_speedTest, interval=3600, first=0, context="my_context")
     updater.start_polling()
