@@ -37,7 +37,7 @@ def readJobs(readFrom):
 				break
 		return myJobs
 	except IOError:
-		print "File can not be opened for reading."
+		print (f"File: {readFrom} can not be opened for reading.")
 	return 0
 
 def getQuote(readFrom, quoteID):
