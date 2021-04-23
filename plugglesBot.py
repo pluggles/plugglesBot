@@ -508,7 +508,9 @@ def bot_error(bot, update, error):
 
 def find_existing_alerts(job_queue):
     """Summary
-
+    reads in any alerts from the existing alerts file
+    deletes the file
+    rewrites any alerts that can still happen back to the file
     Args:
         job_queue (TYPE): Description
     """
