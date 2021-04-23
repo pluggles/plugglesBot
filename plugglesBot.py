@@ -753,7 +753,7 @@ def main():
         "removedisapproval", remove_disapproval_photo, pass_args=True))
 
     # on noncommand i.e message - echo the message on Telegram
-    dispatcher.add_handler(MessageHandler([Filters.text], parse_message))
+    dispatcher.add_handler(MessageHandler(Filters.text, parse_message))
 
     # log all errors
     dispatcher.add_error_handler(bot_error)
