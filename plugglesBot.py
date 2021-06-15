@@ -573,7 +573,7 @@ def parse_message(bot, update):
             if len(word) > 3:
                 bot.sendMessage(update.message.chat_id, subreddit)
             # update.message.reply_text(subreddit)
-    if "help" in update.message.text:
+    if "help" in update.message.text.lower():
         bot.send_photo(chat_id=update.message.chat_id, photo=open('images/can-i-offer-you-a-nice-egg-in-this-trying-time.png', 'rb'))
 
 
