@@ -5,7 +5,7 @@ def fortune(args):
 	try:
 		args = args.split( )
 		cmd = []
-		cmd.append('fortune')
+		cmd.append('/usr/games/fortune')
 		for arg in args:
 			if arg.startswith("-"):
 				arg = arg.replace('w', '')
@@ -33,7 +33,7 @@ def cowsay(args):
 	try:
 		#print args
 		cmd = []
-		cmd.append('cowsay')
+		cmd.append('/usr/games/cowsay')
 		cmd.append('-W 25')
 		for arg in args:
 			arg = arg.replace("-", "")
@@ -48,7 +48,7 @@ def madcow(args):
 	try:
 		#print args
 		cmd = []
-		cmd.append('cowsay')
+		cmd.append('/usr/games/cowsay')
 		cmd.append('-d')
 		cmd.append('-W 25')
 		for arg in args:
