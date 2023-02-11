@@ -46,6 +46,7 @@ import helpmessages
 import bashQuotes
 import trivia
 import motorcycleUpdates
+import masa
 import myspeedtest
 
 
@@ -644,6 +645,39 @@ def notify_motorcyle(bot, update, args):
         my_message = "That was not a valid command"
     bot.sendMessage(update.message.chat_id, my_message)
 
+def notify_masa(bot, update, args):
+    """Summary
+
+    Args:
+        bot (TYPE): The bot, always good to send
+        update (TYPE): the message handler
+        args (TYPE): Description
+    """
+    if not args:
+        my_message = masa.AddChatId(update.message.chat_id)
+    elif args[0] == "remove":
+        my_message = masa.RemoveChatId(update.message.chat_id)
+    else:
+        my_message = "That was not a valid command"
+    bot.sendMessage(update.message.chat_id, my_message)
+
+def check_latest_jobs(bot, job):
+    """Summary
+
+    Args:
+        bot (TYPE): Description
+        job (TYPE): Description
+
+    Returns:
+        TYPE: Description
+    """
+    chat_ids = masa.GetChatIds()
+    message = masa.getCount()
+    if not message:
+        return ""
+    else:
+        for chat_id in chat_ids:
+            bot.sendMessage(chat_id, message)
 
 def check_latest_motorcycle(bot, job):
     """Summary
@@ -740,6 +774,10 @@ def main():
         "notifyxkcd", notify_xkcd, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "notifymotorcycle", notify_motorcyle, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "notifymasa", notify_masa, pass_args=True))
+    dispatcher.add_handler(CommandHandler(
+        "testmasa", check_latest_jobs, pass_args=True))
     dispatcher.add_handler(CommandHandler(
         "notifyspeedtest", notify_speedTest, pass_args=True))
     dispatcher.add_handler(CommandHandler("speed", speedTest))
