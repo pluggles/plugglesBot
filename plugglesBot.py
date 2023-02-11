@@ -677,7 +677,7 @@ def check_latest_jobs(bot, job, args):
         return ""
     else:
         for chat_id in chat_ids:
-            bot.sendMessage(chat_id, message)
+            bot.sendMessage(chat_id, text=message, parse_mode=telegram.constants.ParseMode.MARKDOWN_V2)
 
 def check_latest_motorcycle(bot, job):
     """Summary
