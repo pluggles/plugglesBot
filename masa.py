@@ -85,7 +85,7 @@ def getCount():
     active_jobs = parse_rows(rows)
     previous_jobs = get_previous_jobs()
     new_jobs = find_diff(active_jobs, previous_jobs)
-    # write_jobs(active_jobs)
+    write_jobs(active_jobs)
     message = format_message(new_jobs, active_jobs)
 
     
