@@ -661,7 +661,7 @@ def notify_masa(bot, update, args):
         my_message = "That was not a valid command"
     bot.sendMessage(update.message.chat_id, my_message)
 
-def check_latest_jobs(bot, job):
+def check_latest_jobs(bot, job, args):
     """Summary
 
     Args:
