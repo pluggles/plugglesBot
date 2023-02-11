@@ -105,6 +105,8 @@ def format_message(new_jobs, active_jobs):
     return message
 
 def find_diff(active_jobs, saved_jobs):
+    if not saved_jobs:
+        return active_jobs.keys()
     new_jobs = set(active_jobs) - set(saved_jobs)
     # print "new jobs ", new_jobs
     # for id in new_jobs:
